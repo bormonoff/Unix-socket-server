@@ -41,15 +41,14 @@ void SendResponse(Socket& socket, Server& server, SequenseInfo& info) {
         // Buildid_add_overflow checks if int overflow happens. Changes 
         // the variable. https://gcc.gnu.org/onlinedocs/gcc/Integer-Overflow-Builtins.html
         if (__builtin_add_overflow(first_start, first_interval, &first_start)) {
-            first_start = first_interval;
+            first_start = info.sequenses.find("seq1") -> second.first;
         }
         if (__builtin_add_overflow(second_start, second_interval, &second_start)) {
-            second_start = second_interval = 1000;
+            second_start = info.sequenses.find("seq2") -> second.first;
         }
         if (__builtin_add_overflow(third_start, third_interval, &third_start)) {
-            third_start = third_interval = 1000;
+            third_start = info.sequenses.find("seq3") -> second.first;
         }
-
         std::this_thread::sleep_for(THREAD_WAIT);
     }
 }
@@ -98,7 +97,6 @@ void HandleClientConnection(Socket&& socket, Server& server) {
     SequenseInfo client_data;
     try {
         FormSeqData(socket, server, client_data);
-
         SendResponse(socket, server, client_data);
     } catch (std::exception& ex) {
         server.CloseClientSocket(socket);

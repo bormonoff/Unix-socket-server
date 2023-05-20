@@ -5,8 +5,7 @@
 
 namespace util {
 
-// This function get a template string, parse it and cover all conditions
+// This function gets a template string, parse it and cover all the conditions
 std::optional<std::pair<int16_t, int16_t>> ParseStringToSeq(const std::string& str, 
-                                                        std::string parse_str);
-
+                                                            std::string parse_str);
 }  // namespace util

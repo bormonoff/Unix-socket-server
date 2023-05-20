@@ -1,7 +1,5 @@
 #include "network/TCP_server.h"
 
-#include <cmath>
-
 namespace {
 
 void InitServer() {

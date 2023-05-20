@@ -1,7 +1,7 @@
 #include <util/util.h>
 
 namespace util {
-std::optional<std::pair<short, short>> ParseStringToSeq(const std::string& str, 
+std::optional<std::pair<int16_t, int16_t>> ParseStringToSeq(const std::string& str, 
                                                         std::string parse_str) {
     std::string seq_name;
     short first_digit{0};
@@ -18,15 +18,19 @@ std::optional<std::pair<short, short>> ParseStringToSeq(const std::string& str,
         pos += temp.size() + delim_size;
         if (temp.size() <= 0) { continue; }
         if(seq_name == "") { seq_name = temp; continue; }
-        if(first_digit == 0) { first_digit = std::stoi(temp); continue; }
-        if(interval == 0) { interval = std::stoi(temp); continue; }
+        try {
+            if(first_digit == 0) { first_digit = std::stoi(temp); continue; }
+            if(interval == 0) { interval = std::stoi(temp); continue; }
+        } catch(std::exception& ex) {
+            return std::nullopt;
+        }
     }
 
     if (seq_name != str) { return std::nullopt; }
     if (first_digit < -9999 || first_digit > 9999 || first_digit == 0) { return std::nullopt; }
     if (interval < -9999 || interval > 9999 || interval == 0) { return std::nullopt; }
 
-    return std::make_pair<short, short>(std::move(first_digit), std::move(interval));
+    return std::make_pair<int16_t, int16_t>(std::move(first_digit), std::move(interval));
 }
 
 }  // namespace util

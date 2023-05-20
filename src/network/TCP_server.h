@@ -1,7 +1,7 @@
 #include <iostream>
-#include <list>
 #include <thread>
 #include <functional>
+#include <map>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -19,9 +19,7 @@ const unsigned short MAX_CONNECTIONS_COUNT = 15;
 const unsigned short CHAR_BUF = 50;
 
 struct SequenseInfo {
-    std::pair<short, short> seq1;
-    std::pair<short, short> seq2;
-    std::pair<short, short> seq3;
+    std::map<std::string, std::pair<uint16_t, uint16_t>> sequenses;
 };
 
 class TCPServer {
@@ -36,9 +34,7 @@ public:
     // Init the server socket and run Run() function
     void Start();
 
-    ~TCPServer() {
-        close(server_socket_);
-    }
+    ~TCPServer() { close(server_socket_); }
 
 private:
     // This function accept new clients via while cycle and
@@ -46,10 +42,16 @@ private:
     void Run();
 
     // Additional funtion that write error msg in the socket
-    void SendError(int client_socket);
+    void SendError(const std::string& seq, Socket client_socket);
+
+    // Additional funtion that send a message to a client
+    void SendMessage(const std::string& msg, Socket client_socket);
 
     // This function handle the new client and handle it
-    void HandleRequest(int client_socket);
+    void HandleRequest(Socket client_socket);
+
+    // This funtion correctly close client socket after disconnection 
+    void CloseClientSocket(Socket client_socket);
 
     Socket server_socket_;
     uint16_t port_;

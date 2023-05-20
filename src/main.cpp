@@ -1,9 +1,11 @@
 #include "network/TCP_server.h"
 
+#include <cmath>
+
 namespace {
 
 void InitServer() {
-    network::TCPServer server;
+    network::TCPServer server{};
     server.Start();
 }
 }  // namespace 

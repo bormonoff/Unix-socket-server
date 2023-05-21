@@ -18,17 +18,17 @@ std::optional<std::pair<int16_t, int16_t>> ParseStringToSeq(const std::string& s
         temp = temp.assign(parce_str, pos, parce_str.find(delim, pos) - pos);
         pos += temp.size() + delim_size;
         if (temp.size() <= 0) { continue; }
-        if(seq_name == "") { seq_name = temp; continue; }
+        if (seq_name == "") { seq_name = temp; continue; }
         try {
-            if(first_digit == 0) { first_digit = std::stoi(temp); continue; }
-            if(interval == 0) { interval = std::stoi(temp); continue; }
-        } catch(std::exception& ex) {
+            if (first_digit == 0) { first_digit = std::stoi(temp); continue; }
+            if (interval == 0) { interval = std::stoi(temp); continue; }
+        } catch (std::exception& ex) {
             return std::nullopt;
         }
     }
 
     if (seq_name != str) { return std::nullopt; }
-    if (first_digit < -9999 || first_digit > 9999 || first_digit == 0) { 
+    if (first_digit <= 0 || first_digit > 9999) { 
         return std::nullopt; }
     if (interval < -9999 || interval > 9999 || interval == 0) { 
         return std::nullopt; }

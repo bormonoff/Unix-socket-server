@@ -3,7 +3,7 @@
 This repository goal is to create a multithreaded server using only the standard linux socket libraries.
  
  #### `How to launch`
- 0. Clone this repo, write these commands and run the server exe.
+ 0. Clone this repository, write the following commands and run the server.
  
  ```
  mkdir build && cd build
@@ -15,16 +15,15 @@ This repository goal is to create a multithreaded server using only the standard
  telnet localhost 8888
 ```
   
- 3.  Write the second commands using the telnet:
+ 3. Using Telnet write the following commands:
 ```
  <seq> <initial digit> <inteval>
-   
+ <initial digit> ∈ [0 : 9999]
+ <interval> ∈ [-9999 : 9999]
+ 
  For example:
    seq1 8989 -2323
-   seq2 1000 1000
-   seq3 -9999 9999
-```
- 4. Write the next command to get all sequences
- ```
-  export seq
+   seq2 9999 9999
+   seq3 10 -1
+   export seq
 ```

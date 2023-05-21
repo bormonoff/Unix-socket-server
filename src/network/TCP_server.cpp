@@ -3,6 +3,7 @@
 #include <sstream>
 
 namespace network {
+using namespace std::literals;
 
 void TCPServer::Start() {
     // Setup the socket and connection tools: PORT and interfaces
@@ -18,7 +19,7 @@ void TCPServer::Start() {
     // Create a socket with a descriptor
     server_socket_ = socket(AF_INET, SOCK_STREAM, 0);
     if(server_socket_ < 0) {
-        std::cerr << "Can't create the server socket" << std::endl;
+        std::cerr << "Can't create the server socket"s << std::endl;
         exit(0);
     }
 
@@ -26,23 +27,18 @@ void TCPServer::Start() {
     int bindStatus = bind(server_socket_, (struct sockaddr*) &servAddr, 
                           sizeof(servAddr));
     if(bindStatus < 0) {
-        std::cerr << "Error binding socket to the local address. "
-                  << "Wait and reboot..." << std::endl;
+        std::cerr << "Error binding socket to the local address. "s
+                  << "Wait and reboot..."s << std::endl;
         exit(0);
     }
 
-    std::cout << "Waiting for a client to connect..." << std::endl;
+    std::cout << "Waiting for a client to connect..."s << std::endl;
 
     // Server now listen the socket
     listen(server_socket_, MAX_CONNECTIONS_COUNT);
 
     // Inits server funtion
     Run();
-}
-
-void TCPServer::CloseClientSocket(Socket client_socket) {
-    std::cout << "Client has disconnected. Socket: " <<  client_socket << std::endl;
-    close(client_socket);
 }
 
 void TCPServer::Run() {
@@ -52,7 +48,7 @@ void TCPServer::Run() {
         // Accepts a new client and creates client socket
         Socket client_socket = accept(server_socket_, (struct sockaddr*)&client_addr, 
                                       &addrlen);
-        std::cout << "Client has connected. Socket: " << client_socket << std::endl;
+        std::cout << "Client has connected. Socket: "s << client_socket << std::endl;
 
         // Creates an addiotional thread to handle the connetction
         std::thread(handler::HandleClientConnection<Socket, TCPServer>,
@@ -63,7 +59,7 @@ void TCPServer::Run() {
 void TCPServer::ReadFromSocket(std::string& buff, Socket client_socket) {
     auto seq_bytes = recv(client_socket, buff.data(), buff.size() + 1, 0);
     if (seq_bytes <= 0) {
-        throw std::runtime_error("Client has disconnected");
+        throw std::runtime_error("Client has disconnected"s);
     }
 }
 
@@ -72,7 +68,12 @@ void TCPServer::SendMessage(const std::string& msg, Socket client_socket) {
 
     auto send_bytes = send(client_socket, msg.c_str(), msg.size() + 1, 0);
     if (send_bytes <= 0) {
-        throw std::runtime_error("Client has disconnected");
+        throw std::runtime_error("Client has disconnected"s);
     }
+}
+
+void TCPServer::CloseClientSocket(Socket client_socket) {
+    std::cout << "Client has disconnected. Socket: "s <<  client_socket << std::endl;
+    close(client_socket);
 }
 }  // namespace network

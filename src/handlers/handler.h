@@ -23,9 +23,9 @@ struct SequenseInfo {
 // Forms result sequense for a client using template server object
 template<typename Socket = int, typename Server>
 void SendResponse(Socket& socket, Server& server, SequenseInfo& info) {
-    int64_t first_start = info.sequenses.find("seq1") -> second.first;
-    int64_t second_start = info.sequenses.find("seq2") -> second.first;
-    int64_t third_start = info.sequenses.find("seq3") -> second.first;
+    uint64_t first_start = info.sequenses.find("seq1") -> second.first;
+    uint64_t second_start = info.sequenses.find("seq2") -> second.first;
+    uint64_t third_start = info.sequenses.find("seq3") -> second.first;
 
     int16_t first_interval = info.sequenses.find("seq1") -> second.second;
     int16_t second_interval = info.sequenses.find("seq2") -> second.second;
@@ -62,7 +62,7 @@ void FormSeqData(Socket& socket, Server& server, SequenseInfo& info) {
     bool cycle {true};
 
     std::vector<std::string> seq_name{"seq1", "seq2", "seq3"};
-    while(cycle) {
+    while (cycle) {
         for (auto& seq : seq_name) {
             server.ReadFromSocket(buff, socket);
             auto seq_data = util::ParseStringToSeq(seq, buff);
@@ -82,7 +82,7 @@ void FormSeqData(Socket& socket, Server& server, SequenseInfo& info) {
     }   
 
     server.SendMessage("Write \"export seq\" to get a sequence\r\n", socket);
-    while(true) {
+    while (true) {
         server.ReadFromSocket(buff, socket);
         if (buff.find("export seq") != std::string::npos) {
             break;
@@ -91,7 +91,7 @@ void FormSeqData(Socket& socket, Server& server, SequenseInfo& info) {
     }
 }
 
-// Funtion handle client requests using template server and socket
+// Handles client requests using template server and socket
 template<typename Socket = int, typename Server>
 void HandleClientConnection(Socket&& socket, Server& server) {
     SequenseInfo client_data;

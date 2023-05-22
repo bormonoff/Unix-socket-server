@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include "network/signal_handlers.h"
+
 namespace network {
 using namespace std::literals;
 
@@ -37,8 +39,11 @@ void TCPServer::Start() {
     // Server now listen the socket
     listen(server_socket_, MAX_CONNECTIONS_COUNT);
 
+    SetSignalHandlers();
+    
     // Inits server funtion
     Run();
+    
 }
 
 void TCPServer::Run() {
@@ -56,6 +61,10 @@ void TCPServer::Run() {
     }
 }
 
+void TCPServer::SetSignalHandlers() {
+    signal(SIGPIPE, sigpipe_handler);
+}
+
 void TCPServer::ReadFromSocket(std::string& buff, Socket client_socket) {
     auto seq_bytes = recv(client_socket, buff.data(), buff.size() + 1, 0);
     if (seq_bytes <= 0) {
@@ -64,9 +73,7 @@ void TCPServer::ReadFromSocket(std::string& buff, Socket client_socket) {
 }
 
 void TCPServer::SendMessage(const std::string& msg, Socket client_socket) {
-    using namespace std::literals;
-
-    auto send_bytes = send(client_socket, msg.c_str(), msg.size() + 1, 0);
+    auto send_bytes = send(client_socket, msg.c_str(), msg.size() + 1, 0);\
     if (send_bytes <= 0) {
         throw std::runtime_error("Client has disconnected"s);
     }

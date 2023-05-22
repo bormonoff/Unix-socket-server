@@ -48,6 +48,9 @@ private:
     // threads using handlers to handle the clients
     void Run();
 
+    // Sets handlers to correctly handle error signals
+    void SetSignalHandlers();
+
     Socket server_socket_;
     uint16_t port_;
 };

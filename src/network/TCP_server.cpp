@@ -40,7 +40,7 @@ void TCPServer::Start() {
     listen(server_socket_, MAX_CONNECTIONS_COUNT);
 
     SetSignalHandlers();
-    
+
     // Inits server funtion
     Run();
     
@@ -73,7 +73,7 @@ void TCPServer::ReadFromSocket(std::string& buff, Socket client_socket) {
 }
 
 void TCPServer::SendMessage(const std::string& msg, Socket client_socket) {
-    auto send_bytes = send(client_socket, msg.c_str(), msg.size() + 1, 0);\
+    auto send_bytes = send(client_socket, msg.c_str(), msg.size() + 1, 0);
     if (send_bytes <= 0) {
         throw std::runtime_error("Client has disconnected"s);
     }

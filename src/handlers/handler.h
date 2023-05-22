@@ -50,10 +50,6 @@ void SendResponse(Socket& socket, Server& server, SequenseInfo& info) {
             third_start = info.sequenses.find("seq3") -> second.first;
         }
         std::this_thread::sleep_for(THREAD_WAIT);
-
-        if (strerror(errno) == "Connection reset by peer"s) {
-            throw "Connection reset by peer";
-        }
     }
 }
 

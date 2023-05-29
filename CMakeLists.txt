@@ -5,7 +5,6 @@ project(UNIXServer CXX)
 find_package(Threads REQUIRED)
 
 set(CMAKE_CXX_STANDARD 20)
-set(THREADS_PREFER_PTHREAD_FLAG ON)
 set(CMAKE_BUILD_TYPE Debug)
 
 # server source ---------
@@ -21,4 +20,8 @@ add_executable(server
     )
 
 target_include_directories(server PRIVATE src)
+
+target_link_libraries(server
+    ${CMAKE_THREAD_LIBS_INIT}
+)
 # server source ---------

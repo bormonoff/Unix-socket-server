@@ -4,12 +4,13 @@
 #include <thread>
 #include <functional>
 
+#include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
 #include <sys/uio.h>
 #include <sys/time.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 #include "handlers/handler.h"
 #include "util/util.h"
